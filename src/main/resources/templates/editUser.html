@@ -31,32 +31,43 @@
         <input id="password" type="text" th:field="*{password}" placeholder="password" />
     </div>
 
-    <select id="roles" size="10" multiple>
-        <th:block th:each="role : ${rolessWCheck}" >
-            <th:block th:if = "${role.checked}">
-                <option  selected  th:text="${role.name}" th:value="${role.id}">
+    <div id="editUser_roles">
+        <select size="10" multiple name="selectRoles" id="roles">
+            <th:block th:each="role : ${rolessWCheck}">
+                <option th:if="${role.checked == true}" selected
+                        th:value="${role.id}"
+                        th:text="${role.name}">
+                <option th:unless="${role.checked == true}"
+                        th:value="${role.id}"
+                        th:text="${role.name}">
             </th:block>
-            <th:block th:unless="${role.checked}">
-                <option th:text="${role.name}" th:value="${role.id}">
-            </th:block>
+        </select>
 
-        </th:block>
-    </select>
+<!--    <select id="roles" size="10" multiple>-->
+<!--        <th:block th:each="role : ${rolessWCheck}" >-->
+<!--            <th:block th:if = "${role.checked}">-->
+<!--                <option  selected  th:text="${role.name}" th:value="${role.id}">-->
+<!--            </th:block>-->
+<!--            <th:block th:unless="${role.checked}">-->
+<!--                <option th:text="${role.name}" th:value="${role.id}">-->
+<!--            </th:block>-->
+
+<!--        </th:block>-->
+<!--    </select>-->
 
 <!--    <input type="submit" value="Submit"/>   это когда испытывалась ф-ция XMLHttpRequest() -->
     <input type="button" value="save" id="bSave"/>
 </form>
 
+<form action="#" th:action="@{/logout}" method="get">
+    <input type="submit" value="logout"/>
+</form>
+
+
 <script type="text/javascript">
 
     let bSave = document.getElementById("bSave");
     bSave.onclick = function() {
-        console.log("we're in onclick()")
-        ///// рабочая версия с JQuery:
-        //let sjq = $('#selectTag').val();
-        //console.log("sjq")
-        //console.log(sjq)
-
         let body = {}
         body.id = document.getElementById("id").value;
         body.firstName = document.getElementById("firstName").value;
@@ -65,37 +76,21 @@
         body.password = document.getElementById("password").value;
         body.roles = []
 
-        let selectedRoles = selectTag.selectedOptions; //работает, но выбирает только первый selected option [...selectTag.options].find(option => option.selected)
-        let selRole = {checked : false, id : 0, name : ""};
-        console.log("before cycle")
-        for(let i = 0; i < selectedRoles.length; i++) {
-            body.roles[i] = {
-                checked : true,
-                id : selectedRoles[i].value,
-                name : selectedRoles[i].text
-            };
+        let roles = document.getElementById("roles").options;
+        for(role of roles) {
+            if(role.selected){
+                body.roles.push({id : role.value, name : role.text, checked : role.selected });
+            }
         }
-        console.log("after cycle")
-
-        console.log("body: ")
-        console.log(body)
-        console.log("before postParams()...011")
         postParams(body)
         return false;
     }
 
     /////////////////////////////// с пом. fetch() //////////////////
     async function postParams(pbody) {
-        // let user = {
-        //     name: 'John',
-        //     surname: 'Smith'
-        // };
-        console.log("w're IN postParams()...")
-        console.log("stringify(pBody):")
-        console.log(JSON.stringify(pbody))
         try {
             console.log("before fetch()")
-            let response = await fetch("/admin/editUser2", {
+            let response = await fetch("/admin/editUser", {
                 credentials: 'include',
                 method: 'POST',
                 headers: {

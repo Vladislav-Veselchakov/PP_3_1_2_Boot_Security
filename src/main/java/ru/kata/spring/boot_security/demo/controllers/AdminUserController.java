@@ -61,7 +61,7 @@ public class AdminUserController {
         return "editUser";
     }
 
-    @PostMapping("EditUser")
+    @PostMapping("editUser")
 //@PostMapping(path = "EditUser", consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE })
     public String updateUser(@RequestBody User user,  ModelMap model) {
 //          User user1 = userService.getUserById(user.getId());
