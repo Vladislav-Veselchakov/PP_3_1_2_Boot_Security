@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru-RU">
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/static/main.css}" rel="stylesheet" />
+    <title>VL: add user</title>
+</head>
+<body>
+
+<form th:action="@{/admin/addUser}" th:object="${user}" method="post">
+
+    <div>
+        <label>firstName:</label>
+        <input type="text" th:field="*{firstName}" placeholder="UserName" />
+    </div>
+    <div>
+        <label>lastName:</label>
+        <input type="text" th:field="*{lastName}" placeholder="Last name" />
+    </div>
+    <div>
+        <label>email:</label>
+        <input type="text" th:field="*{email}" placeholder="email" />
+    </div>
+    <div>
+        <label>password:</label>
+        <input type="text" th:field="*{password}" placeholder="password" />
+    </div>
+
+    <input type="submit" value="Submit"/>
+</form>
+
+
+
+</body>
+</html>

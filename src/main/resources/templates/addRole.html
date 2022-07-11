@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru-RU">
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/static/main.css}" rel="stylesheet" />
+  <title>VL: add role</title>
+</head>
+<body>
+
+<form th:action="@{/admin/addRole}" th:object="${role}" method="post">
+
+  <div>
+    <label>role name:</label>
+    <input type="text" th:field="*{name}" placeholder="role Name" />
+  </div>
+
+  <input type="submit" value="Submit"/>
+</form>
+
+
+
+</body>
+</html>
