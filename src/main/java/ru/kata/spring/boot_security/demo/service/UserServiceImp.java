@@ -29,22 +29,27 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional
+    @SuppressWarnings({"unchecked"})
     public void update(User user) {
         userDao.update(user);
     }
 
     //   @Transactional(readOnly = true)
     @Override
+    @Transactional
     public List<User> getUsers() {
         return userDao.getUsers();
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         userDao.deleteUser(id);
     }
 
     @Override
+    @Transactional
     public User getUserById(Long id) {
         return userDao.getUserById(id);
     }
@@ -52,26 +57,31 @@ public class UserServiceImp implements UserService {
     // ========== from dao new ============//
 
     @Override
+    @Transactional
     public Set<Role> getRoles(Long id) {
         return null;
     }
 
     @Override
+    @Transactional
     public void setModified(User user, Date modified) {
 
     }
 
     @Override
+    @Transactional
     public void setCreated(User user, Date created) {
 
     }
 
     @Override
+    @Transactional
     public void setRoleByName(User user, String roleName) {
 
     }
 
     @Override
+    @Transactional
     public void setRoles(User user, Set<Role> roles) {
 
     }

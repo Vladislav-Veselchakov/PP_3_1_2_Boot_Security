@@ -6,6 +6,9 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +35,20 @@ public class RoleDaoImpl implements RoleDao{
 
     @Override
     public List<Role> getRolesWithCheck(User user) {
-        return null;
+        List lstResult =
+                entityManager.createNativeQuery("SELECT\n" +
+                                "                 CASE WHEN ar.id = ur.Role_id THEN TRUE ELSE FALSE END as checked,\n" +
+                                "                 ar.id AS ID,\n" +
+                                "                 ar.name as name\n" +
+                                "            FROM roles AS ar\n" +
+                                "            LEFT JOIN user_role AS ur\n" +
+                                "                ON ur.Role_id = ar.id and ur.User_id = :User_id")
+                        .setParameter("User_id", user.getId()).getResultList();
+        List<Role> lstCheck = new ArrayList<>();
+        for (Object elem : lstResult) {
+            lstCheck.add(new Role((Boolean) (((BigInteger) ((Object[])elem)[0]).intValue()>0)?true:false, (Long) ((BigInteger) ((Object[])elem)[1]).longValue(), (String) ((Object[])elem)[2]));
+        }
+        return  lstCheck;
     }
 
     @Override

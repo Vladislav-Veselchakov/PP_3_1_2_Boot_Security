@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru-RU">
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/static/main.css}" rel="stylesheet" />
+    <title>VL: Edit user</title>
+</head>
+<body>
+
+<form id="vlUser" th:action="@{/admin/EditUser}" th:object="${user}" method="post">
+
+    <div>
+        <label>id:</label>
+        <input id="id" type="text" th:field="*{id}" readonly />
+    </div>
+    <div>
+        <label>firstName:</label>
+        <input id="firstName" type="text" th:field="*{firstName}" placeholder="UserName" />
+    </div>
+    <div>
+        <label>lastName:</label>
+        <input id="lastName" type="text" th:field="*{lastName}" placeholder="Last name" />
+    </div>
+    <div>
+        <label>email:</label>
+        <input id="email" type="text" th:field="*{email}" placeholder="email" />
+    </div>
+    <div>
+        <label>password:</label>
+        <input id="password" type="text" th:field="*{password}" placeholder="password" />
+    </div>
+
+    <select id="roles" size="10" multiple>
+        <th:block th:each="role : ${rolessWCheck}" >
+            <th:block th:if = "${role.checked}">
+                <option  selected  th:text="${role.name}" th:value="${role.id}">
+            </th:block>
+            <th:block th:unless="${role.checked}">
+                <option th:text="${role.name}" th:value="${role.id}">
+            </th:block>
+
+        </th:block>
+    </select>
+
+<!--    <input type="submit" value="Submit"/>   это когда испытывалась ф-ция XMLHttpRequest() -->
+    <input type="button" value="save" id="bSave"/>
+</form>
+
+<script type="text/javascript">
+
+    let bSave = document.getElementById("bSave");
+    bSave.onclick = function() {
+        console.log("we're in onclick()")
+        ///// рабочая версия с JQuery:
+        //let sjq = $('#selectTag').val();
+        //console.log("sjq")
+        //console.log(sjq)
+
+        let body = {}
+        body.id = document.getElementById("id").value;
+        body.firstName = document.getElementById("firstName").value;
+        body.lastName = document.getElementById("lastName").value;
+        body.email = document.getElementById("email").value;
+        body.password = document.getElementById("password").value;
+        body.roles = []
+
+        let selectedRoles = selectTag.selectedOptions; //работает, но выбирает только первый selected option [...selectTag.options].find(option => option.selected)
+        let selRole = {checked : false, id : 0, name : ""};
+        console.log("before cycle")
+        for(let i = 0; i < selectedRoles.length; i++) {
+            body.roles[i] = {
+                checked : true,
+                id : selectedRoles[i].value,
+                name : selectedRoles[i].text
+            };
+        }
+        console.log("after cycle")
+
+        console.log("body: ")
+        console.log(body)
+        console.log("before postParams()...011")
+        postParams(body)
+        return false;
+    }
+
+    /////////////////////////////// с пом. fetch() //////////////////
+    async function postParams(pbody) {
+        // let user = {
+        //     name: 'John',
+        //     surname: 'Smith'
+        // };
+        console.log("w're IN postParams()...")
+        console.log("stringify(pBody):")
+        console.log(JSON.stringify(pbody))
+        try {
+            console.log("before fetch()")
+            let response = await fetch("/admin/editUser2", {
+                credentials: 'include',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(pbody) // body: JSON.stringify(user)
+            });
+            console.log("after fetch()")
+        } catch (ex) {
+            console.log(ex.message)
+        }
+        // if (response.ok) { // если HTTP-статус в диапазоне 200-299 получаем тело ответа
+        //     console.log("berfore response()")
+        //     let result = await response.json();
+        //     console.log("after response.json()")
+        // } else {
+        //     alert("Ошибка HTTP: " + response.status);
+        // }
+        console.log(result.message)
+    } /////////////// c пом fetch() ////////////
+
+/** работа с XMLHttpRequest() - не удальсь нормально настроить - см коммент внутри
+     let vlform = document.getElementById("vlUser");
+     vlform.addEventListener("submit", vlSubmit);
+     function vlSubmit(event) {
+        // event.preventDefault(); // ВЛ: С этим работало, но:
+        // 1. не работал return "redirect:/admin". В соотв. контроллере.
+        // 2. нельзя было поменять юзера с именем QQ на имя QQq  -  вылетало с ошибкой:
+        // HHH000010: On release of batch it still contained JDBC statements
+        // ...
+        // java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'QQq' for key 'users.UK_3g1j96g94xpk3lpxl2qbl985x'
+        // Но можно было поменять QQ на QQй, например.
+        // 3. Если event.preventDefault() - закомментировать, то будет ошибка:
+        // org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported
+        // много чего пробовал, но не помогло. Поэтому переходим на метод посылки fetch()
+        VLsendJSON();
+    }
+
+     function VLsendJSON(){
+
+        let vlUser ={};
+        vlUser.id = document.getElementById("id").value
+        vlUser.firstName = document.getElementById("firstName").value
+        vlUser.lastName = document.getElementById("lastName").value
+        vlUser.email = document.getElementById("email").value
+        vlUser.password = document.getElementById("password").value
+        vlUser.roles = [];
+
+        let roles = document.getElementById("roles").options;
+        for(role of roles) {
+            if(role.selected){
+                vlUser.roles.push({id : role.value, name : role.text, checked : role.selected });
+            }
+       }
+        // vlUser.roles = document.getElementById("roles").get
+        let url = vlform.action;
+
+        // Creating a XHR object
+        let xhr = new XMLHttpRequest();
+
+        // open a connection
+        xhr.open("POST", url, true);
+
+        // Set the request header i.e. which type of content you are sending
+        xhr.setRequestHeader("Content-Type", "application/json");
+        // xhr.setRequestHeader('Content-Type', 'text/html; charset=utf-8');
+        // xhr.setRequestHeader('Content-Type', 'text/html; charset=utf-8');
+
+        // Create a state change callback
+        xhr.onreadystatechange = function () {
+            // if (xhr.readyState === 4 && xhr.status === 200) {
+            //
+            //     // Print received data from server
+            //    alert( this.responseText);
+            //
+            // }
+            // if (this.readyState != 4) return;
+            //
+            // alert( this.responseText );
+        };
+
+        // Converting JSON data to string
+        var data = JSON.stringify(vlUser);
+
+        // Sending data with the request
+        xhr.send(data);
+    } // function VLsendJSON(){
+
+ */
+
+</script>
+
+</body>
+</html>

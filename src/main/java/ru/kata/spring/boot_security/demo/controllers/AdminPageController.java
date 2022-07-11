@@ -34,7 +34,7 @@ public class AdminPageController {
         model.addAttribute("roles", roles);
         model.addAttribute("result001", "result001");
 
-        List<Object> userRole = entityManager.createNativeQuery(
+        List<Object> userRole = (List<Object>) entityManager.createNativeQuery(
     "                    SELECT u.name as user, ur.User_id, ur.Role_id, r.name as role\n" +
             "                    FROM user_role as ur\n" +
             "                    LEFT JOIN users as u\n" +
