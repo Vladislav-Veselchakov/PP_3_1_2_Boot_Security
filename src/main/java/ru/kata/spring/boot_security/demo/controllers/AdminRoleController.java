@@ -36,8 +36,16 @@ public class AdminRoleController {
         return  ("redirect:/admin");
     }
 
+    @GetMapping("editRole")
+    public String editRolePage(@RequestParam("id") Long id, ModelMap modelMap) {
+        Role role = roleService.getRoleById(id);
+        modelMap.addAttribute("role", role);
 
-
-
-
+        return "editRole";
+    }
+    @PostMapping("editRole")
+    public String updateRole(@ModelAttribute("role") Role role) {
+        roleService.update(role);
+        return "redirect:/admin";
+    }
 } // public class AdminRoleController {

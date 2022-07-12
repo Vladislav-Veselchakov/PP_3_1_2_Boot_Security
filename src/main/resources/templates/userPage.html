@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru-RU">
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/static/main.css}" rel="stylesheet" />
+    <title>VL: USER page</title>
+</head>
+<body>
+
+<h3>USER page</h3>
+
+<span th:utext="${user.id}"></span><br/>
+<span th:utext="${user.firstName}"></span><br/>
+<span th:utext="${user.lastName}"></span><br/>
+<span th:utext="${user.email}"></span><br/>
+<span th:utext="${user.password}"></span><br/>
+<span th:utext="${user.created}"></span><br/>
+<span th:utext="${user.modified}"></span><br/>
+
+<h4>user roles:</h4>
+<table>
+    <tr>
+        <th>id</th>
+        <th>Name</th>
+    </tr>
+    <tr th:each = "role : ${roles}">
+        <td th:utext = "${role.id}"> </td>
+        <td th:utext = "${role.name}"> </td>
+    </tr>
+</table>
+
+
+<br><br> <h3> lalala end of page</h3>
+<form action="#" th:action="@{/logout}" method="get">
+    <input type="submit" value="logout"/>
+</form>
+
+</body>
+</html>

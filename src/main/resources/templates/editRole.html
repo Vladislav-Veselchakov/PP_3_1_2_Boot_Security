@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru-RU">
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/static/main.css}" rel="stylesheet" />
+    <title>VL: Edit role</title>
+</head>
+<body>
+
+<form  th:action="@{/admin/editRole}" th:object="${role}" method="post">
+
+    <div>
+        <label>id:</label>
+        <input id="id" type="text" th:field="*{id}" readonly />
+    </div>
+    <div>
+        <label>name:</label>
+        <input type="text" th:field="*{name}" placeholder="role name" />
+    </div>
+            <input type="submit" value="Submit"/>   это когда испытывалась ф-ция XMLHttpRequest()
+</form>
+
+<form action="#" th:action="@{/logout}" method="get">
+    <input type="submit" value="logout"/>
+</form>
+
+
+
+</body>
+</html>

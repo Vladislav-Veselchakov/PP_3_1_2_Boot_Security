@@ -10,6 +10,14 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<properties>
+		<java.version>17</java.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<spring.boot>2.7.1</spring.boot>
+		<mysql.connector>8.0.29</mysql.connector>
+	</properties>
+
 
 	<groupId>ru.kata</groupId>
 	<artifactId>spring-boot_security-demo</artifactId>
@@ -18,15 +26,11 @@
 	<description>Demo project for Spring Boot</description>
 
 
-	<properties>
-		<java.version>17</java.version>
-	</properties>
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<version>${spring.boot}</version>
 		</dependency>
 
 		<!-- VL: Provides fast application restarts (!!!!), LiveReload, and configurations for enhanced development experience.
@@ -43,33 +47,37 @@ it's from spring.io/guides example.
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-<!--			<version>${spring.boot}</version>-->
+			<version>${spring.boot}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-<!--			<version>${mysql.connector}</version>-->
+			<version>${mysql.connector}</version>
 		</dependency>
 
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.boot}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring.boot}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring.boot}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
+<!--			<version>${spring.boot}</version>-->
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

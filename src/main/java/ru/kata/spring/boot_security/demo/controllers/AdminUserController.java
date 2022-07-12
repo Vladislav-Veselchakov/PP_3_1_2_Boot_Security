@@ -37,7 +37,7 @@ public class AdminUserController {
     }
 
     @PostMapping("/addUser")
-    public String addUser(@ModelAttribute User user, ModelMap model) {
+    public String addUser(@ModelAttribute("user") User user, ModelMap model) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         user.setCreated(df.format(new Date()));
         user.setModified(df.format(new Date()));
@@ -46,11 +46,6 @@ public class AdminUserController {
         return ("redirect:/admin");
     }
 
-    @GetMapping("/delete")
-    public String deleteUser(@RequestParam(name = "id") Long id, ModelMap model) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
-    }
 
     @GetMapping("edit")
     public String editUserPage(@RequestParam(name = "id") Long id, ModelMap model) {
@@ -62,7 +57,6 @@ public class AdminUserController {
     }
 
     @PostMapping("editUser")
-//@PostMapping(path = "EditUser", consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE })
     public String updateUser(@RequestBody User user,  ModelMap model) {
 //          User user1 = userService.getUserById(user.getId());
 //        Set<Role> roleSet = user.getRoles();
@@ -73,6 +67,11 @@ int a = 11;
 
         return "redirect:/admin";
 
+    }
+    @GetMapping("/delete")
+    public String deleteUser(@RequestParam(name = "id") Long id, ModelMap model) {
+        userService.deleteUser(id);
+        return "redirect:/admin";
     }
 
 } // public class AdminUserController {
